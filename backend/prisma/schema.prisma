@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User{
+  user_id String @id @default(cuid())
+  email String @unique @db.VarChar(50) 
+  first_name String @db.VarChar(50)
+  last_name String @db.VarChar(50)
+  password String @db.VarChar(255)
+  is_seller Boolean @default(false)
+  address Address[]
+  cart_id Cart?
+  order_id Orders[]
+  products Product[]
+}
+
+model Address {
+  address_id String @id @default(cuid())
+  region String @db.VarChar(50)
+  province String @db.VarChar(50)
+  city String @db.VarChar(50)
+  barangay String @db.VarChar(50)
+  postal_code Int
+  user User @relation(fields: [user_id], references: [user_id])
+  user_id String
+}
+
+model Cart {
+  cart_id String @id @default(cuid())
+  total_price Int 
+  user User @relation(fields: [user_id],references: [user_id])
+  user_id String @unique
+  cart_item Cart_item[]
+
+}
+
+model Cart_item {
+  cart_item_id String @id @default(cuid())
+  quantity Int
+  total_price Int 
+  cart Cart @relation(fields: [cart_id],references: [cart_id])
+  cart_id String
+}
+
+model Orders{
+  orders_id String @id @default(cuid())
+  shipping_address String @db.VarChar(100)
+  total_price Int 
+  user User @relation(fields: [user_id],references: [user_id])
+  user_id String @unique
+  order_item Order_item[]
+
+}
+
+model Order_item {
+  order_item_id String @id @default(cuid())
+  quantity Int
+  total_price Int 
+  orders Orders @relation(fields: [orders_id],references: [orders_id])
+  orders_id String
+
+}
+
+model Product {
+  product_id String @id @default(cuid())
+  product_name String @db.VarChar(100)
+  quantiy Int
+  price Int
+  user User @relation(fields: [seller_id],references: [user_id])
+  seller_id String
+
+}

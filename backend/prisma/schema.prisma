@@ -36,7 +36,7 @@ model Address {
 
 model Cart {
   cart_id String @id @default(cuid())
-  total_price Int 
+  total_price Int @default(0)
   user User @relation(fields: [user_id],references: [user_id])
   user_id String @unique
   cart_item Cart_item[]
@@ -49,6 +49,8 @@ model Cart_item {
   total_price Int 
   cart Cart @relation(fields: [cart_id],references: [cart_id])
   cart_id String
+  product_id String
+
 }
 
 model Orders{
@@ -67,15 +69,16 @@ model Order_item {
   total_price Int 
   orders Orders @relation(fields: [orders_id],references: [orders_id])
   orders_id String
+  product_id String
 
 }
 
 model Product {
   product_id String @id @default(cuid())
   product_name String @db.VarChar(100)
-  quantiy Int
+  quantity Int
   price Int
   user User @relation(fields: [seller_id],references: [user_id])
   seller_id String
-
+  
 }

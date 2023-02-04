@@ -13,7 +13,6 @@ export const authController = {
 
     if (!checkUser) {
       const hashPassword = await bcrypt.hash(user.password, 10);
-      console.log(hashPassword);
       const newUser = await prisma.user.create({
         data: {
           email: user.email,
@@ -24,7 +23,13 @@ export const authController = {
       });
       const { password, ...others } = newUser;
 
-      return res.status(201).json(others);
+      const newCart = await prisma.cart.create({
+        data: {
+          user_id: newUser.user_id,
+        },
+      });
+
+      return res.status(201).json({ user: others, cart: newCart });
     } else {
       return res.status(200).json({ message: "user exist" });
     }
@@ -50,6 +55,12 @@ export const authController = {
 
     const { password, ...others } = checkUser;
 
-    res.status(200).json(others);
+    const cart = await prisma.cart.findUnique({
+      where: {
+        user_id: checkUser.user_id,
+      },
+    });
+
+    res.status(200).json({ user: others, cart });
   },
 };

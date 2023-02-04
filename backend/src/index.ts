@@ -1,5 +1,5 @@
 import express from "express";
-import { authRoutes } from "./routes";
+import { authRoutes, cartRoutes, productRoutes } from "./routes";
 import cors from "cors";
 const PORT = 8080;
 const app = express();
@@ -12,6 +12,8 @@ app.use(
 );
 app.use(express.json());
 app.use("/auth", authRoutes);
+app.use("/cart", cartRoutes);
+app.use("/products", productRoutes);
 
 app.listen(PORT, () => {
   console.log("runnng");

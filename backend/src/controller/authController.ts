@@ -1,6 +1,11 @@
 import { Request, Response } from "express";
 import { prisma } from "../services/seed";
 import bcrypt from "bcrypt";
+import {
+  generateRefreshToken,
+  generateAccessToken,
+} from "../utils/generateToken";
+import jwt from "jsonwebtoken";
 
 export const authController = {
   async signup(req: Request, res: Response) {
@@ -29,7 +34,17 @@ export const authController = {
         },
       });
 
-      return res.status(201).json({ user: others, cart: newCart });
+      const accessToken = generateAccessToken(others.user_id);
+      const refreshToken = generateRefreshToken(others.user_id);
+
+      const userDetail: any = { ...others, accessToken };
+
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        sameSite: false,
+      });
+
+      return res.status(201).json({ user: userDetail, cart: newCart });
     } else {
       return res.status(200).json({ message: "user exist" });
     }
@@ -37,7 +52,7 @@ export const authController = {
   async login(req: Request, res: Response) {
     const user = req.body;
 
-    const checkUser: any = await prisma.user.findUnique({
+    let checkUser: any = await prisma.user.findUnique({
       where: {
         email: user.email,
       },
@@ -61,6 +76,55 @@ export const authController = {
       },
     });
 
-    res.status(200).json({ user: others, cart });
+    const accessToken = generateAccessToken(others.user_id);
+    const refreshToken = generateRefreshToken(others.user_id);
+
+    checkUser = { ...others, accessToken };
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      sameSite: false,
+    });
+
+    res.status(200).json({ user: checkUser, cart });
+  },
+  async refreshToken(req: Request, res: Response) {
+    const refreshToken = req.cookies.refreshToken;
+
+    const privateKey = process.env?.JWT_PRIVATE_KEY as string;
+
+    jwt.verify(refreshToken, privateKey, async (err: any, decoded: any) => {
+      if (err) {
+        return;
+      }
+
+      const user_id = decoded.use_id;
+
+      let user: any = await prisma.user.findUnique({
+        where: {
+          user_id,
+        },
+      });
+
+      const cart = await prisma.cart.findUnique({
+        where: {
+          user_id,
+        },
+      });
+
+      const { password, ...others } = user;
+
+      const accessToken = generateAccessToken(user_id);
+      const refreshToken = generateRefreshToken(user_id);
+
+      user = { ...others, accessToken };
+
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        sameSite: false,
+      });
+
+      res.status(200).json({ user, cart });
+    });
   },
 };

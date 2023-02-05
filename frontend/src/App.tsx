@@ -13,16 +13,14 @@ import DailyDiscover from "./pages/DailyDiscover";
 import ProtectedRoutes from "./middleware/ProtectedRoutes";
 
 const router = createBrowserRouter([
+  {},
+
   {
     element: <ProtectedRoutes />,
     children: [
       {
         element: <Root />,
         children: [
-          {
-            path: "/",
-            element: <Home />,
-          },
           {
             path: "user",
             element: <User />,
@@ -35,11 +33,20 @@ const router = createBrowserRouter([
             path: "product/:id",
             element: <ProductPage />,
           },
-          {
-            path: "daily_discover",
-            element: <DailyDiscover />,
-          },
         ],
+      },
+    ],
+  },
+  {
+    element: <Root />,
+    children: [
+      {
+        path: "daily_discover",
+        element: <DailyDiscover />,
+      },
+      {
+        path: "/",
+        element: <Home />,
       },
     ],
   },

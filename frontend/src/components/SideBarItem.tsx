@@ -1,51 +1,39 @@
-import {
-  ChevronDownIcon,
-  ChevronUpIcon,
-  InboxStackIcon,
-  ClipboardDocumentListIcon,
-  ShoppingBagIcon,
-  TagIcon,
-  WalletIcon,
-  ChartBarIcon,
-  ArrowUpRightIcon,
-  ChatBubbleLeftRightIcon,
-  BuildingStorefrontIcon,
-  QuestionMarkCircleIcon,
-} from "@heroicons/react/24/outline";
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 
 type Props = {
-  cons: React.ComponentProps<"svg">;
+  data: any;
 };
 
-const SideBarItem: React.FC<Props> = ({ cons }) => {
+const SideBarItem: React.FC<Props> = ({ data }) => {
   const [isDisplay, setIsDisplay] = useState<boolean>(false);
-  console.log(cons);
+
   return (
     <>
       <div className="flex justify-between px-5 pt-5 pb-1">
         <div className="flex gap-2">
-          <p>Shipping</p>
+          <data.icon className="h-6 w-6" />
+          <p>{data.name}</p>
         </div>
 
         {isDisplay ? (
           <ChevronUpIcon
             onClick={() => setIsDisplay((prev) => !prev)}
-            className="h-6 w-6"
+            className="h-6 w-6 hover:stroke-orange-600"
           />
         ) : (
           <ChevronDownIcon
             onClick={() => setIsDisplay((prev) => !prev)}
-            className="h-6 w-6"
+            className="h-6 w-6 hover:stroke-orange-600"
           />
         )}
-        <div className="flex flex-col items-start pl-14">
-          {isDisplay
-            ? item.map((item) => {
-                return <div className="">Shop Categories</div>;
-              })
-            : null}
-        </div>
+      </div>
+      <div className="flex flex-col items-start pl-14">
+        {isDisplay
+          ? data.options.map((item: any) => {
+              return <div className="">{item}</div>;
+            })
+          : null}
       </div>
     </>
   );

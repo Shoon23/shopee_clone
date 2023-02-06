@@ -16,17 +16,17 @@ const Cart: React.FC<Props> = ({}) => {
     return res.data.cart_item;
   });
   return (
-    <div className="flex flex-col place-items-center w-10/12 self-center gap-5 ">
-      <div className="text-orange-600 text-2xl justify-self-center">
+    <div className="flex w-10/12 flex-col place-items-center gap-5 self-center ">
+      <div className="justify-self-center text-2xl text-orange-600">
         Shopping Cart
       </div>
-      <div className="flex w-full bg-white h-14 items-center shadow-md">
-        <div className="flex gap-2 w-1/2 pl-5">
-          <input type="checkbox" className="checkbox checkbox-error" />
+      <div className="flex h-14 w-full items-center bg-white shadow-md">
+        <div className="flex w-1/2 gap-2 pl-5">
+          <input type="checkbox" className="checkbox-error checkbox" />
           <label className="text-zinc-500">Product</label>
         </div>
-        <div className="flex justify-around w-1/2">
-          <div className="text-zinc-500 h-max">Unit Price</div>
+        <div className="flex w-1/2 justify-around">
+          <div className="h-max text-zinc-500">Unit Price</div>
           <div className="text-zinc-500">Quantity</div>
           <div className="text-zinc-500">Total Price</div>
           <div className="text-zinc-500">Actions</div>
@@ -43,21 +43,21 @@ const Cart: React.FC<Props> = ({}) => {
         <div>No Item on cart</div>
       )}
 
-      <div className="bg-white w-full grid grid-cols-8 grid-rows-4 h-44 place-items-center sticky bottom-0 border border-slate-300 items-end">
-        <div className="col-span-4 border-b border-black w-full self-end border-dashed"></div>
-        <div className=" flex gap-2 border-b border-black w-full col-span-2 justify-center pb-2 border-dashed">
-          <TicketIcon className="w-7 h-7 stroke-orange-600" />
+      <div className="sticky bottom-0 grid h-44 w-full grid-cols-8 grid-rows-4 place-items-center items-end border border-slate-300 bg-white">
+        <div className="col-span-4 w-full self-end border-b border-dashed border-black"></div>
+        <div className=" col-span-2 flex w-full justify-center gap-2 border-b border-dashed border-black pb-2">
+          <TicketIcon className="h-7 w-7 stroke-orange-600" />
           <div className="font-bold">Platform Voucher</div>
         </div>
-        <div className="flex col-span-2 pb-2  border-b border-black w-full justify-center border-dashed">
+        <div className="col-span-2 flex w-full  justify-center border-b border-dashed border-black pb-2">
           <div className="text-blue-600">Select Or Enter Code</div>
         </div>
-        <div className="col-span-4 border-b border-black w-full self-end border-dashed"></div>
+        <div className="col-span-4 w-full self-end border-b border-dashed border-black"></div>
 
-        <div className="col-span-3 flex place-items-center gap-10 border-b border-black pb-2 w-full border-dashed">
+        <div className="col-span-3 flex w-full place-items-center gap-10 border-b border-dashed border-black pb-2">
           <div className="flex place-items-center gap-1 justify-self-start">
-            <input type="checkbox" className="checkbox checkbox-error" />
-            <CurrencyDollarIcon className="w-5 h-5 stroke-yellow-400" />
+            <input type="checkbox" className="checkbox-error checkbox" />
+            <CurrencyDollarIcon className="h-5 w-5 stroke-yellow-400" />
             <div className="text-sm">Shopee Coins</div>
           </div>
           <div className="flex place-items-center">
@@ -65,13 +65,13 @@ const Cart: React.FC<Props> = ({}) => {
             <div className="dropdown dropdown-end">
               <label
                 tabIndex={0}
-                className="btn btn-circle btn-ghost btn-xs text-info"
+                className="btn btn-ghost btn-xs btn-circle text-info"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
-                  className="w-4 h-4 stroke-current"
+                  className="h-4 w-4 stroke-current"
                 >
                   <path
                     strokeLinecap="round"
@@ -83,7 +83,7 @@ const Cart: React.FC<Props> = ({}) => {
               </label>
               <div
                 tabIndex={0}
-                className="card compact dropdown-content shadow bg-base-100 rounded-box w-64"
+                className="card dropdown-content compact rounded-box w-64 bg-base-100 shadow"
               >
                 <div className="card-body">
                   <h2 className="card-title">You needed more info?</h2>
@@ -93,19 +93,19 @@ const Cart: React.FC<Props> = ({}) => {
             </div>
           </div>
         </div>
-        <div className="text-center border-b border-black pb-2 w-full border-dashed">
+        <div className="w-full border-b border-dashed border-black pb-2 text-center">
           <div className="">P100</div>
         </div>
 
-        <div className="flex col-span-full w-full row-start-3 justify-around place-items-center row-span-2 self-center">
+        <div className="col-span-full row-span-2 row-start-3 flex w-full place-items-center justify-around self-center">
           <div className="">
-            <input type="checkbox" className="checkbox checkbox-error" />
+            <input type="checkbox" className="checkbox-error checkbox" />
           </div>
           <div className="">SELECT ALL(39)</div>
           <div className="">DELETE</div>
           <div className="">Remove Inactive Products</div>
           <div className="">Move to my likes</div>
-          <div className="flex flex-col col-span-2">
+          <div className="col-span-2 flex flex-col">
             <div className="">Total(39 items): P7,793</div>
             <div className="">Saved P24142</div>
           </div>

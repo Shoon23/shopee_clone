@@ -6,11 +6,17 @@ type Props = {};
 
 const SellerPage: React.FC<Props> = ({}) => {
   return (
-    <div className="bg-gray-100">
+    <div className="h-screen overflow-hidden bg-gray-100">
       <SellerHeader />
       <div className="flex">
         <SellerSideBar />
-        <div className="flex-1">Main</div>
+        <div className="h-screen flex-1 overflow-x-scroll">
+          Main
+          <div className="h-96">1</div>
+          <div className="h-96">1</div>
+          <div className="h-96">1</div>
+          <div className="h-96">1</div>
+        </div>
       </div>
     </div>
   );

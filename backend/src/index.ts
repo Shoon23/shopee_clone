@@ -19,10 +19,9 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use("/auth", authRoutes);
-
-app.use(verifyToken);
-app.use("/cart", cartRoutes);
 app.use("/products", productRoutes);
+
+app.use("/cart", verifyToken, cartRoutes);
 
 app.listen(PORT, () => {
   console.log("runnng");

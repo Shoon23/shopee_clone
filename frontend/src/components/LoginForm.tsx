@@ -2,7 +2,8 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import { apiClient } from "../lib/apiClient";
+import { useLocation } from "react-router-dom";
 
 interface Props {}
 
@@ -13,7 +14,10 @@ interface iLoginForm {
 
 const LoginForm: React.FC<Props> = ({}) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const queryClient = useQueryClient();
+
+  const pathName = location.state?.prevPath || "/";
 
   const {
     register,
@@ -24,11 +28,7 @@ const LoginForm: React.FC<Props> = ({}) => {
   const { mutate } = useMutation({
     mutationFn: async (formData: iLoginForm) => {
       try {
-        const res = await axios.post(
-          "http://localhost:8080/auth/login",
-          formData
-        );
-
+        const res = await apiClient.post("/auth/login", formData);
         return res.data;
       } catch (error) {
         console.log(error);
@@ -36,7 +36,7 @@ const LoginForm: React.FC<Props> = ({}) => {
     },
     onSuccess(data, variables, context) {
       queryClient.setQueryData(["user"], data);
-      navigate("/");
+      navigate(pathName);
     },
   });
   return (

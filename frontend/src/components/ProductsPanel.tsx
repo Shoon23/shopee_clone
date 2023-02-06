@@ -15,11 +15,13 @@ const ProductsPanel: React.FC<Props> = ({ products, isLoading }) => {
     <>
       <div className="w-10/12  self-center flex flex-col gap-2">
         <div className="grid grid-cols-5 gap-5">
-          {products
-            ? products.map((item: any) => (
-                <Product key={item.id} product_details={item} />
-              ))
-            : null}
+          {products ? (
+            products.map((item: any) => (
+              <Product key={item.product_id} product_details={item} />
+            ))
+          ) : (
+            <div>No Product Available</div>
+          )}
         </div>
       </div>
     </>

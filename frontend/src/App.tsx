@@ -11,56 +11,67 @@ import User from "./pages/User";
 import ProductPage from "./pages/ProductPage";
 import DailyDiscover from "./pages/DailyDiscover";
 import ProtectedRoutes from "./middleware/ProtectedRoutes";
+import Persist from "./middleware/Persist";
+import CheckAuth from "./middleware/CheckAuth";
 
 const router = createBrowserRouter([
-  {},
-
   {
-    element: <ProtectedRoutes />,
+    element: <Persist />,
     children: [
+      {
+        element: <ProtectedRoutes />,
+        children: [
+          {
+            element: <Root />,
+            children: [
+              {
+                path: "user",
+                element: <User />,
+              },
+              {
+                path: "cart",
+                element: <Cart />,
+              },
+              {
+                path: "product/:id",
+                element: <ProductPage />,
+              },
+            ],
+          },
+        ],
+      },
       {
         element: <Root />,
         children: [
           {
-            path: "user",
-            element: <User />,
+            path: "daily_discover",
+            element: <DailyDiscover />,
           },
           {
-            path: "cart",
-            element: <Cart />,
-          },
-          {
-            path: "product/:id",
-            element: <ProductPage />,
+            path: "/",
+            element: <Home />,
           },
         ],
       },
     ],
   },
+
   {
-    element: <Root />,
+    element: <CheckAuth />,
     children: [
       {
-        path: "daily_discover",
-        element: <DailyDiscover />,
-      },
-      {
-        path: "/",
-        element: <Home />,
-      },
-    ],
-  },
-  {
-    path: "auth",
-    element: <AuthPage />,
-    children: [
-      {
-        path: "signup",
-        element: <SignupForm />,
-      },
-      {
-        path: "login",
-        element: <LoginForm />,
+        path: "auth",
+        element: <AuthPage />,
+        children: [
+          {
+            path: "signup",
+            element: <SignupForm />,
+          },
+          {
+            path: "login",
+            element: <LoginForm />,
+          },
+        ],
       },
     ],
   },

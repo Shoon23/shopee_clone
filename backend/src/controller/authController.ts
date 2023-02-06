@@ -44,7 +44,7 @@ export const authController = {
         sameSite: false,
       });
 
-      return res.status(201).json({ user: userDetail, cart: newCart });
+      return res.status(201).json({ ...userDetail, cart: newCart });
     } else {
       return res.status(200).json({ message: "user exist" });
     }
@@ -86,7 +86,7 @@ export const authController = {
       sameSite: false,
     });
 
-    res.status(200).json({ user: checkUser, cart });
+    res.status(200).json({ ...checkUser, cart });
   },
   async refreshToken(req: Request, res: Response) {
     const refreshToken = req.cookies.refreshToken;
@@ -95,7 +95,7 @@ export const authController = {
 
     jwt.verify(refreshToken, privateKey, async (err: any, decoded: any) => {
       if (err) {
-        return;
+        return res.status(403).json(err);
       }
 
       const user_id = decoded.use_id;
@@ -124,7 +124,7 @@ export const authController = {
         sameSite: false,
       });
 
-      res.status(200).json({ user, cart });
+      res.status(200).json({ ...user, cart });
     });
   },
 };

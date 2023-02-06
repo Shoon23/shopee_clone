@@ -1,9 +1,13 @@
 import React from "react";
 import { UserCircleIcon, UserIcon } from "@heroicons/react/24/outline";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {}
 
 const User: React.FC<Props> = ({}) => {
+  const queryClient = useQueryClient();
+
+  const user: any = queryClient.getQueryData(["user"]);
   return (
     <div className="flex justify-center">
       <div className="flex flex-col w-48 gap-5">
@@ -31,7 +35,7 @@ const User: React.FC<Props> = ({}) => {
           <form action="flex flex-col h-full">
             <div className="flex mb-5 gap-5">
               <label className="text-zinc-400 w-40 text-end">Username</label>
-              <div className="">user1</div>
+              <div className="">{`${user?.first_name} ${user?.last_name}`}</div>
             </div>
             <div className="flex gap-5 mb-5 ">
               <label className="text-zinc-400 self-center w-40 text-end">
@@ -47,7 +51,7 @@ const User: React.FC<Props> = ({}) => {
               <label className="text-zinc-400 self-center w-40 text-end">
                 Email
               </label>
-              <label className="">custodiocsean@gmail.com</label>
+              <label className="">{user?.email}</label>
               <a href="">change</a>
             </div>
             <div className="flex gap-5 mb-5">

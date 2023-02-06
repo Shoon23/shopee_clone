@@ -1,8 +1,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiClient } from "../lib/apiClient";
 
 interface Props {}
 
@@ -21,11 +21,7 @@ const SignupForm: React.FC<Props> = ({}) => {
   const { mutate } = useMutation({
     mutationFn: async (formData: iRegisterForm) => {
       try {
-        const res = await axios.post(
-          "http://localhost:8080/auth/signup",
-          formData
-        );
-
+        const res = await apiClient.post("/auth/signup", formData);
         return res.data;
       } catch (error) {
         console.error(error);

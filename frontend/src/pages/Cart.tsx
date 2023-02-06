@@ -5,10 +5,14 @@ import {
   TicketIcon,
   CurrencyDollarIcon,
 } from "@heroicons/react/24/outline";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {}
 
 const Cart: React.FC<Props> = ({}) => {
+  const queryClient = useQueryClient();
+  const cart = queryClient.getQueryData(["cart"]);
+
   return (
     <div className="flex flex-col place-items-center w-10/12 self-center gap-5 ">
       <div className="text-orange-600 text-2xl justify-self-center">

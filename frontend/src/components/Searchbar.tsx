@@ -5,10 +5,21 @@ import {
   MagnifyingGlassIcon,
   ShoppingCartIcon,
 } from "@heroicons/react/24/outline";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
+import { usePrivateAxios } from "../hooks/usePrivateAxios";
 
 interface Props {}
 
 const Searchbar: React.FC<Props> = ({}) => {
+  const queryClient = useQueryClient();
+  const privateApi = usePrivateAxios(queryClient);
+  const user: any = queryClient.getQueryData(["user"]);
+
+  const { data, isLoading } = useQuery(["cart"], async () => {
+    const res = await privateApi.get(`/cart/${user?.cart?.cart_id}`);
+    return res.data.cart_item;
+  });
+  console.log(data);
   return (
     <div className="navbar gap-10">
       <div className=" normal-case text-3xl text-white">
@@ -33,34 +44,34 @@ const Searchbar: React.FC<Props> = ({}) => {
         <Link to={"/cart"}>
           <ShoppingCartIcon tabIndex={0} className="h-7 w-7 stroke-white" />
         </Link>
-        <ul
-          tabIndex={0}
-          className="dropdown-content menu bg-base-100 w-80 p-2 rounded-box border"
-        >
-          <li className="menu-title">
-            <span>Recently Added Products</span>
-          </li>
-          <li>
-            <a>Item 1</a>
-          </li>
-          <li>
-            <a>Item 2</a>
-          </li>
-          <li>
-            <a>Item 1</a>
-          </li>
-          <li>
-            <a>Item 2</a>
-          </li>
-          <li>
-            <a>Item 1</a>
-          </li>
-          <div className="flex justify-end mt-2">
-            <button className="bg-orange-600 text-white w-44 h-8 hover:bg-orange-700 ">
-              View My Shopping Cart
-            </button>
-          </div>
-        </ul>
+
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <ul
+            tabIndex={0}
+            className="dropdown-content menu bg-base-100 w-80 p-2 rounded-box border"
+          >
+            <li className="menu-title">
+              <span>Recently Added Products</span>
+            </li>
+            {data.map((item: any) => {
+              return (
+                <li key={item.product_id}>
+                  <span>{item.product_name}</span>
+                </li>
+              );
+            })}
+            <div className="flex justify-end mt-2">
+              <Link
+                to={"/cart"}
+                className="bg-orange-600 text-white w-44 h-8 hover:bg-orange-700 "
+              >
+                View My Shopping Cart
+              </Link>
+            </div>
+          </ul>
+        )}
       </div>
     </div>
   );

@@ -12,7 +12,7 @@ export const verifyToken = (
 
   jwt.verify(accessToken, publicKey, (err: any, decoded: any) => {
     if (err) {
-      return res.status(403).json({ message: "acces token missing" });
+      return res.status(403).json(err);
     }
     next();
   });

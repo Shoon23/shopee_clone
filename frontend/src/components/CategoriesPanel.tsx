@@ -6,14 +6,8 @@ interface Props {}
 
 const CategoriesPanel: React.FC<Props> = ({}) => {
   const { data, isLoading } = useQuery(["categories"], async () => {
-    try {
-      const res = await axios.get(
-        "https://fakestoreapi.com/products/categories"
-      );
-      return res.data;
-    } catch (error) {
-      console.log(error);
-    }
+    const res = await axios.get("https://fakestoreapi.com/products/categories");
+    return res.data;
   });
 
   return (

@@ -10,14 +10,16 @@ type Props = {};
 
 const ProductPage: React.FC<Props> = ({}) => {
   const { id } = useParams();
-  const { data, isLoading, isFetching } = useQuery(["product"], async () => {
-    try {
+  const { data, isLoading, isFetching } = useQuery(
+    ["product"],
+    async () => {
       const res = await axios.get(`https://fakestoreapi.com/products/${id}`);
       return res.data;
-    } catch (error) {
-      console.log(error);
+    },
+    {
+      refetchOnMount: false,
     }
-  });
+  );
   if (isLoading || isFetching) {
     return <div className="">Loading...</div>;
   }
@@ -25,20 +27,20 @@ const ProductPage: React.FC<Props> = ({}) => {
   return (
     <div className="flex flex-col place-items-center gap-5">
       <ProductBriefing product_details={data} />
-      <div className="flex p-5 w-10/12 gap-24 bg-white divide-x-2 ">
+      <div className="flex w-10/12 gap-24 divide-x-2 bg-white p-5 ">
         <div className="flex gap-2">
           <div className="avatar">
             <div className="w-24 rounded-full">
               <img src="https://placeimg.com/192/192/people" />
             </div>
           </div>
-          <div className="flex-col flex self-center gap-2">
+          <div className="flex flex-col gap-2 self-center">
             <div className="">Shop1</div>
             <div className="flex gap-2">
-              <button className="btn btn-outline btn-error btn-sm">
+              <button className="btn-outline btn-error btn-sm btn">
                 Chat now
               </button>
-              <button className="btn btn-outline btn-sm">View Shop</button>
+              <button className="btn-outline btn-sm btn">View Shop</button>
             </div>
           </div>
         </div>

@@ -13,12 +13,11 @@ const DailyDiscover: React.FC<Props> = ({}) => {
   const { data: products, isLoading } = useQuery(
     ["products", page],
     async () => {
-      try {
-        const res = await axios.get(`https://fakestoreapi.com/products`);
-        return res.data;
-      } catch (error) {
-        console.log(error);
-      }
+      const res = await axios.get(`https://fakestoreapi.com/products`);
+      return res.data;
+    },
+    {
+      refetchOnMount: false,
     }
   );
   useEffect(() => {
@@ -29,23 +28,23 @@ const DailyDiscover: React.FC<Props> = ({}) => {
     <>
       <div ref={topRef}></div>
       <div className="w-10/12 self-center">
-        <div className="flex my-10">
-          <div className="flex rounded-lg absolute left-1/2 top-40 text-3xl font-semibold bg-orange-600 text-white w-16 h-16 justify-center place-items-center">
+        <div className="my-10 flex">
+          <div className="absolute left-1/2 top-40 flex h-16 w-16 place-items-center justify-center rounded-lg bg-orange-600 text-3xl font-semibold text-white">
             All
           </div>
-          <div className="border-t border-dashed border-black w-full"></div>
+          <div className="w-full border-t border-dashed border-black"></div>
         </div>
       </div>
       <ProductsPanel products={products} isLoading={isLoading} />
-      <div className="btn-group border-orange-600  self-center shadow-base my-4">
+      <div className="shadow-base btn-group  my-4 self-center border-orange-600">
         <button
           disabled={page === 1 && true}
           onClick={() => setPage((prev) => prev - 1)}
-          className="btn border-orange-600 bg-orange-600 hover:bg-orange-700 hover:border-orange-700"
+          className="btn border-orange-600 bg-orange-600 hover:border-orange-700 hover:bg-orange-700"
         >
           «
         </button>
-        <button className="btn border-orange-600 bg-orange-600 hover:bg-orange-700 hover:border-orange-700">
+        <button className="btn border-orange-600 bg-orange-600 hover:border-orange-700 hover:bg-orange-700">
           {page}
         </button>
 
@@ -54,7 +53,7 @@ const DailyDiscover: React.FC<Props> = ({}) => {
             setPage((prev) => prev + 1);
             topRef.current?.scrollIntoView({ behavior: "smooth" });
           }}
-          className="btn border-orange-600 bg-orange-600 hover:bg-orange-700 hover:border-orange-700"
+          className="btn border-orange-600 bg-orange-600 hover:border-orange-700 hover:bg-orange-700"
         >
           »
         </button>

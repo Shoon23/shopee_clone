@@ -9,14 +9,14 @@ const CheckAuth: React.FC<Props> = ({}) => {
 
   const user = queryClient.getQueryData(["user"]);
 
-  const isExist = user !== null;
+  const isLoggedIn = user === null;
 
   const { isLoading, isError } = useQuery(["user"], useRefreshToken, {
-    enabled: isExist,
+    enabled: isLoggedIn,
     refetchOnMount: false,
     retry: false,
   });
-  if (isError) {
+  if (isError || !isLoggedIn) {
     return <Outlet />;
   }
 

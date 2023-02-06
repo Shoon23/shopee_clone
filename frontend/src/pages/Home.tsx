@@ -11,14 +11,16 @@ const Home: React.FC<Props> = ({}) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const { data: products, isLoading } = useQuery(["products", 1], async () => {
-    try {
+  const { data: products, isLoading } = useQuery(
+    ["products", 1],
+    async () => {
       const res = await axios.get("http://localhost:8080/products");
       return res.data;
-    } catch (error) {
-      console.log(error);
+    },
+    {
+      refetchOnMount: false,
     }
-  });
+  );
   return (
     <div className="flex flex-col gap-5">
       <CategoriesPanel />
@@ -28,7 +30,7 @@ const Home: React.FC<Props> = ({}) => {
           onClick={() => {
             navigate("/daily_discover");
           }}
-          className="btn btn-outline"
+          className="btn-outline btn rounded-none border-gray-400  bg-white px-36 py-1 text-xs hover:border-gray-400 hover:bg-gray-300 hover:text-black"
         >
           See more
         </button>

@@ -8,15 +8,19 @@ const Persist: React.FC<Props> = ({}) => {
   const queryClient = useQueryClient();
 
   const user = queryClient.getQueryData(["user"]);
-  const isExist = user !== null;
+  const isLoggedIn = user === null;
 
-  const { isLoading, isError } = useQuery(["user"], useRefreshToken, {
-    enabled: isExist,
+  const { isLoading, status } = useQuery(["user"], useRefreshToken, {
+    enabled: isLoggedIn,
     refetchOnMount: false,
     retry: false,
   });
 
-  return isLoading ? <div className="">loading....</div> : <Outlet />;
+  if (!isLoggedIn) {
+    return <Outlet />;
+  }
+
+  return isLoading ? <div>Loading...</div> : <Outlet />;
 };
 
 export default Persist;

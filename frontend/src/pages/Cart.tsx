@@ -11,10 +11,19 @@ const Cart: React.FC<Props> = ({}) => {
   const privateApi = usePrivateAxios(queryClient);
   const user: any = queryClient.getQueryData(["user"]);
 
-  const { data: cart, isLoading } = useQuery(["cart"], async () => {
-    const res = await privateApi.get(`/cart/${user?.cart?.cart_id}`);
-    return res.data.cart_item;
-  });
+  const isLoggedIn = user !== null;
+
+  const { data: cart, isLoading } = useQuery(
+    ["cart"],
+    async () => {
+      const res = await privateApi.get(`/cart/${user?.cart?.cart_id}`);
+      return res.data.cart_item;
+    },
+    {
+      enabled: isLoggedIn,
+      refetchOnMount: false,
+    }
+  );
   return (
     <div className="flex w-10/12 flex-col place-items-center gap-5 self-center ">
       <div className="justify-self-center text-2xl text-orange-600">
@@ -62,10 +71,10 @@ const Cart: React.FC<Props> = ({}) => {
           </div>
           <div className="flex place-items-center">
             <div className="text-sm font-bold">Insufficient Coins Balance</div>
-            <div className="dropdown dropdown-end">
+            <div className="dropdown-end dropdown">
               <label
                 tabIndex={0}
-                className="btn btn-ghost btn-xs btn-circle text-info"
+                className="btn-ghost btn-xs btn-circle btn text-info"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -110,7 +119,7 @@ const Cart: React.FC<Props> = ({}) => {
             <div className="">Saved P24142</div>
           </div>
           <div className="">
-            <button className="btn btn-error text-white">Error</button>
+            <button className="btn-error btn text-white">Error</button>
           </div>
         </div>
       </div>

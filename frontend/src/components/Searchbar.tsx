@@ -15,37 +15,47 @@ const Searchbar: React.FC<Props> = ({}) => {
   const privateApi = usePrivateAxios(queryClient);
   const user: any = queryClient.getQueryData(["user"]);
 
-  const { data } = useQuery(["cart"], async () => {
-    const res = await privateApi.get(`/cart/${user?.cart?.cart_id}`);
-    return res.data.cart_item;
-  });
+  const isLoggedIn = user === null;
+  console.log(isLoggedIn);
+
+  const { data } = useQuery(
+    ["cart"],
+    async () => {
+      const res = await privateApi.get(`/cart/${user?.cart?.cart_id}`);
+      return res.data.cart_item;
+    },
+    {
+      enabled: isLoggedIn,
+      refetchOnMount: false,
+    }
+  );
   return (
     <div className="navbar gap-10">
-      <div className=" normal-case text-3xl text-white">
+      <div className=" text-3xl normal-case text-white">
         <Link to={"/"} className="flex">
-          <ShoppingBagIcon className="w-16 h-16" />
+          <ShoppingBagIcon className="h-16 w-16" />
           <div className="self-center">Shopee</div>
         </Link>
       </div>
 
-      <div className="flex bg-white w-3/4 gap-2 h-12 rounded-sm">
+      <div className="flex h-12 w-3/4 gap-2 rounded-sm bg-white">
         <input
           type="text"
           placeholder="Search"
-          className="input w-full h-full"
+          className="input h-full w-full"
         />
-        <div className="self-center h-full">
-          <MagnifyingGlassIcon className="stroke-white  hover:bg-orange-700 bg-orange-600 h-10 p-2 m-1 w-10" />
+        <div className="h-full self-center">
+          <MagnifyingGlassIcon className="m-1  h-10 w-10 bg-orange-600 stroke-white p-2 hover:bg-orange-700" />
         </div>
       </div>
 
-      <div className="dropdown dropdown-hover dropdown-end">
+      <div className="dropdown-end dropdown dropdown-hover">
         <Link to={"/cart"}>
           <ShoppingCartIcon tabIndex={0} className="h-7 w-7 stroke-white" />
         </Link>
         <ul
           tabIndex={0}
-          className="dropdown-content menu bg-base-100 w-80 p-2 rounded-box border border-gray-500"
+          className="dropdown-content menu rounded-box w-80 border border-gray-500 bg-base-100 p-2"
         >
           {data ? (
             <>
@@ -70,19 +80,19 @@ const Searchbar: React.FC<Props> = ({}) => {
                   </li>
                 );
               })}
-              <div className="mx-4 flex justify-between mt-2">
+              <div className="mx-4 mt-2 flex justify-between">
                 <div className="">{data.length - 5 > 0 && data.length - 5}</div>
                 <Link
                   to={"/cart"}
-                  className="bg-orange-600 text-white p-1 hover:bg-orange-700 rounded-md"
+                  className="rounded-md bg-orange-600 p-1 text-white hover:bg-orange-700"
                 >
                   View My Shopping Cart
                 </Link>
               </div>
             </>
           ) : (
-            <div className="flex flex-col h-72 justify-center	items-center gap-3">
-              <ShoppingBagIcon className="w-20 h-20 stroke-orange-600" />
+            <div className="flex h-72 flex-col items-center	justify-center gap-3">
+              <ShoppingBagIcon className="h-20 w-20 stroke-orange-600" />
               <p className="">No Products Yet</p>
             </div>
           )}

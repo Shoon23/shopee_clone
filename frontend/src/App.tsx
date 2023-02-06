@@ -13,6 +13,7 @@ import DailyDiscover from "./pages/DailyDiscover";
 import ProtectedRoutes from "./middleware/ProtectedRoutes";
 import Persist from "./middleware/Persist";
 import CheckAuth from "./middleware/CheckAuth";
+import SellerPage from "./pages/SellerPage";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       {
         element: <ProtectedRoutes />,
         children: [
+          {
+            path: "/seller",
+            element: <SellerPage />,
+          },
           {
             element: <Root />,
             children: [

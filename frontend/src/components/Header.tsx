@@ -6,10 +6,10 @@ type Props = {};
 
 const Header: React.FC<Props> = ({}) => {
   return (
-    <div className="bg-orange-600 pl-24 pr-24 h-32">
+    <header className="bg-orange-600 pl-24 pr-24 h-32">
       <Navbar />
       <Searchbar />
-    </div>
+    </header>
   );
 };
 

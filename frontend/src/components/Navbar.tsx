@@ -1,6 +1,6 @@
 import React from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 type Props = {};
 
@@ -27,7 +27,7 @@ const Navbar: React.FC<Props> = ({}) => {
         <div className="text-white hover:text-gray-300 text-sm">English</div>
 
         {user ? (
-          <div className="dropdown dropdown-hover dropdown-end ">
+          <Link to={"/user"} className="dropdown dropdown-hover dropdown-end ">
             <div tabIndex={0} className="flex gap-1 ">
               <div className="avatar">
                 <div className="w-6 rounded-full">
@@ -51,7 +51,7 @@ const Navbar: React.FC<Props> = ({}) => {
                 <a className="text-sm">Logout</a>
               </li>
             </ul>
-          </div>
+          </Link>
         ) : (
           <div className="flex gap-1 ">
             <Link

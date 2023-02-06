@@ -1,18 +1,20 @@
 import React from "react";
-import {
-  BuildingStorefrontIcon,
-  ChatBubbleLeftRightIcon,
-  TicketIcon,
-  CurrencyDollarIcon,
-} from "@heroicons/react/24/outline";
-import { useQueryClient } from "@tanstack/react-query";
+import { TicketIcon, CurrencyDollarIcon } from "@heroicons/react/24/outline";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import CartItem from "../components/CartItem";
+import { usePrivateAxios } from "../hooks/usePrivateAxios";
 
 interface Props {}
 
 const Cart: React.FC<Props> = ({}) => {
   const queryClient = useQueryClient();
-  const cart = queryClient.getQueryData(["cart"]);
+  const privateApi = usePrivateAxios(queryClient);
+  const user: any = queryClient.getQueryData(["user"]);
 
+  const { data: cart, isLoading } = useQuery(["cart"], async () => {
+    const res = await privateApi.get(`/cart/${user?.cart?.cart_id}`);
+    return res.data.cart_item;
+  });
   return (
     <div className="flex flex-col place-items-center w-10/12 self-center gap-5 ">
       <div className="text-orange-600 text-2xl justify-self-center">
@@ -30,84 +32,16 @@ const Cart: React.FC<Props> = ({}) => {
           <div className="text-zinc-500">Actions</div>
         </div>
       </div>
-      <div className="w-full bg-white">
-        <div className="flex gap-3 h-16 place-content-start place-items-center border-b border-slate-200">
-          <div className="w-16 flex justify-center">
-            <input type="checkbox" className="checkbox checkbox-error" />
-          </div>
-          <BuildingStorefrontIcon className="w-6 h-6" />
-          <div className="font-bold text-base">Shop1</div>
-          <ChatBubbleLeftRightIcon className="w-6 h-6 stroke-orange-600" />
-        </div>
-        <div className="flex h-36 place-items-center border-b border-slate-200">
-          <div className="h-16 w-16 flex place-content-center place-items-center">
-            <input type="checkbox" className="checkbox checkbox-error" />
-          </div>
 
-          <div className="flex gap-2 w-80 ">
-            <img
-              className="h-20 w-20 rounded-2xl"
-              src="https://placeimg.com/400/225/arch"
-              alt="Shoes"
-            />
-            <div className="break">
-              <p>Nike Socks pure cotton</p>
-              <p className="text-orange-600">Nike Socks pure cotton</p>
-            </div>
-          </div>
-
-          <div className="dropdown w-56">
-            <label tabIndex={0} className="">
-              Variations:
-            </label>
-            <ul
-              tabIndex={0}
-              className="border shadow-md border-orange-700 dropdown-content menu p-2 bg-base-100 rounded-box w-80 gap-2 "
-            >
-              <li className="flex flex-row gap-2">
-                <div className="hover:bg-white">Types:</div>
-                <button className="btn btn-outline btn-error w-16">
-                  Error
-                </button>
-                <button className="btn btn-outline btn-error w-16">
-                  Error
-                </button>
-                <button className="btn btn-outline btn-error w-16">
-                  Error
-                </button>
-              </li>
-              <li className="flex flex-row gap-2">
-                <div className="hover:bg-white">Size:</div>
-                <button className="btn btn-outline btn-error w-16">
-                  Error
-                </button>
-                <button className="btn btn-outline btn-error w-16">
-                  Error
-                </button>
-                <button className="btn btn-outline btn-error w-16">
-                  Error
-                </button>
-              </li>
-            </ul>
-          </div>
-          <div className="w-32">40 dollars</div>
-          <div className="btn-group w-40">
-            <button className="btn btn-error h-1 w-1">«</button>
-            <button className="btn btn-error h-1 w-1">1</button>
-            <button className="btn btn-error h-1 w-1">»</button>
-          </div>
-          <div className="w-40">90 Dollars</div>
-          <div className="w-24">
-            <button>Delete</button>
-          </div>
-        </div>
-        <div className="flex place-items-center m-5 gap-2">
-          <div className=" justify-self-center">
-            <TicketIcon className="w-7 h-7 stroke-orange-600" />
-          </div>
-          <div className="text-blue-500 text-sm">Add Voucher</div>
-        </div>
-      </div>
+      {isLoading ? (
+        <div className="">Loading..</div>
+      ) : cart ? (
+        cart.map((item: any) => {
+          return <CartItem key={item.product_id} cartItem={item} />;
+        })
+      ) : (
+        <div>No Item on cart</div>
+      )}
 
       <div className="bg-white w-full grid grid-cols-8 grid-rows-4 h-44 place-items-center sticky bottom-0 border border-slate-300 items-end">
         <div className="col-span-4 border-b border-black w-full self-end border-dashed"></div>

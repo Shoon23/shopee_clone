@@ -13,34 +13,34 @@ interface Props {
 const ProductRating: React.FC<Props> = ({ rate }) => {
   return (
     <div className="w-10/12 bg-white">
-      <div className="flex flex-col m-5 gap-2">
+      <div className="m-5 flex flex-col gap-2">
         <div className="text-xl">Product Ratings</div>
         <div className="flex gap-7 bg-orange-50">
-          <div className="flex flex-col m-5">
+          <div className="m-5 flex flex-col">
             <div className="flex gap-2">
               <span className=" text-3xl text-orange-600">{rate}</span>
-              <span className="text-orange-600 self-center">out of 5</span>
+              <span className="self-center text-orange-600">out of 5</span>
             </div>
             <div className="rating rating-md">
-              <StarIcon className="w-8 h-8 stroke-orange-500 fill-orange-500" />
-              <StarIcon className="w-8 h-8 stroke-orange-500 fill-orange-500" />
-              <StarIcon className="w-8 h-8 stroke-orange-500 fill-orange-500" />
-              <StarIcon className="w-8 h-8 stroke-orange-500 fill-orange-500" />
-              <StarIcon className="w-8 h-8 stroke-orange-500" />
+              <StarIcon className="h-8 w-8 fill-orange-500 stroke-orange-500" />
+              <StarIcon className="h-8 w-8 fill-orange-500 stroke-orange-500" />
+              <StarIcon className="h-8 w-8 fill-orange-500 stroke-orange-500" />
+              <StarIcon className="h-8 w-8 fill-orange-500 stroke-orange-500" />
+              <StarIcon className="h-8 w-8 stroke-orange-500" />
             </div>
           </div>
-          <div className="flex self-center gap-2">
-            <button className="btn btn-outline">5</button>
-            <button className="btn btn-outline">4</button>
-            <button className="btn btn-outline">3</button>
-            <button className="btn btn-outline">2</button>
-            <button className="btn btn-outline">1</button>
-            <button className="btn btn-outline">With comments</button>
-            <button className="btn btn-outline">With media</button>
+          <div className="flex gap-2 self-center">
+            <button className="btn-outline btn">5</button>
+            <button className="btn-outline btn">4</button>
+            <button className="btn-outline btn">3</button>
+            <button className="btn-outline btn">2</button>
+            <button className="btn-outline btn">1</button>
+            <button className="btn-outline btn">With comments</button>
+            <button className="btn-outline btn">With media</button>
           </div>
         </div>
         <div className="flex flex-col gap-5">
-          <div className="flex border-b-2 pb-2 gap-2">
+          <div className="flex gap-2 border-b-2 pb-2">
             <div className="">
               <div className="avatar ">
                 <div className="w-12 rounded-full">
@@ -51,11 +51,11 @@ const ProductRating: React.FC<Props> = ({ rate }) => {
             <div className="flex flex-col gap-2">
               <div className="">User1</div>
               <div className="rating rating-xs">
-                <StarIcon className="w-4 h-4 stroke-orange-500 fill-orange-500" />
-                <StarIcon className="w-4 h-4 stroke-orange-500 fill-orange-500" />
-                <StarIcon className="w-4 h-4 stroke-orange-500 fill-orange-500" />
-                <StarIcon className="w-4 h-4 stroke-orange-500" />
-                <StarIcon className="w-4 h-4 stroke-orange-500" />
+                <StarIcon className="h-4 w-4 fill-orange-500 stroke-orange-500" />
+                <StarIcon className="h-4 w-4 fill-orange-500 stroke-orange-500" />
+                <StarIcon className="h-4 w-4 fill-orange-500 stroke-orange-500" />
+                <StarIcon className="h-4 w-4 stroke-orange-500" />
+                <StarIcon className="h-4 w-4 stroke-orange-500" />
               </div>
               <div className="text-sm">
                 2022-11-12 13:21 | Variation: Brown,L
@@ -83,21 +83,29 @@ const ProductRating: React.FC<Props> = ({ rate }) => {
                   </div>
                 </div>
               </div>
-              <div className="flex mt-2 gap-1">
-                <HandThumbUpIcon className="w-5 h-5 " />
+              <div className="mt-2 flex gap-1">
+                <HandThumbUpIcon className="h-5 w-5 " />
                 <div className="self-center">66</div>
               </div>
             </div>
           </div>
-          <div className="flex self-end place-items-center gap-2">
-            <ChevronLeftIcon className="w-5 h-5" />
+          <div className="flex place-items-center gap-2 self-end">
+            <ChevronLeftIcon className="h-5 w-5" />
             <div className="btn-group">
-              <button className="btn btn-error">1</button>
-              <button className="btn btn-outline btn-error">2</button>
-              <button className="btn btn-outline btn-error">3</button>
-              <button className="btn btn-outline btn-error">4</button>
+              <button className="btn border-orange-600 bg-orange-600 hover:border-orange-600 hover:bg-orange-600">
+                1
+              </button>
+              <button className="btn border-orange-600 bg-orange-50 text-orange-600 hover:border-orange-600 hover:bg-orange-600 hover:text-white ">
+                2
+              </button>
+              <button className="hover:text-whiter btn border-orange-600 bg-orange-50 text-orange-600 hover:border-orange-600 hover:bg-orange-600">
+                3
+              </button>
+              <button className="btn border-orange-600 bg-orange-50 text-orange-600 hover:border-orange-600 hover:bg-orange-600 hover:text-white">
+                4
+              </button>
             </div>
-            <ChevronRightIcon className="w-5 h-5" />
+            <ChevronRightIcon className="h-5 w-5" />
           </div>
         </div>
       </div>

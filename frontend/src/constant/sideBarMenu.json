@@ -1,0 +1,67 @@
+[
+  {
+    "name": "Shipment",
+    "options": ["My Shipment", "Mass Ship", "Shipping Setting"]
+  },
+  {
+    "name": "Order",
+    "options": ["My Orders", "Cancellation", "Return/Refund"]
+  },
+  {
+    "name": "Product",
+    "options": [
+      "My Product",
+      "Add New Product",
+      "Product Violations",
+      "Product Setting"
+    ]
+  },
+  {
+    "name": "Marketing Centre",
+    "options": ["Marketing Centre", "Shopee Ads", "Vouchers"]
+  },
+  {
+    "name": "Finance",
+    "options": ["My Income", "My Balance", "Bank Accounts", "Payment Setting"]
+  },
+  {
+    "name": "Data",
+    "options": ["Business Insights", "Account Health"]
+  },
+  {
+    "name": "Product",
+    "options": [
+      "My Product",
+      "Add New Product",
+      "Product Violations",
+      "Product Setting"
+    ]
+  },
+  {
+    "name": "Growth",
+    "options": ["Prefered Seller"]
+  },
+  {
+    "name": "Customer Service",
+    "options": ["Chat Assistant", "FAQ Assistant"]
+  },
+  {
+    "name": "Shop",
+    "options": [
+      "Shop Rating",
+      "Shop Profile",
+      "Shop Decoration",
+      "Shop Categories",
+      "Media Space",
+      "My Report"
+    ]
+  },
+  {
+    "name": "Setting",
+    "options": ["My Addresses", "Shop Setting", "Account", "Partner Platform"]
+  },
+  {
+    "name": "Help",
+    "options": ["Seller Service"]
+  }
+]

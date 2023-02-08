@@ -29,9 +29,6 @@ const SellerHeader: React.FC<Props> = ({}) => {
         <div className="flex place-items-center">
           <Squares2X2Icon className="h-7 w-7" />
           <BellIcon className="h-7 w-7" />
-          <p className="rounded-xl border border-black p-2 text-sm">
-            Education Hub
-          </p>
         </div>
       </div>
     </header>

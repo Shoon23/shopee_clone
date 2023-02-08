@@ -14,6 +14,8 @@ import ProtectedRoutes from "./middleware/ProtectedRoutes";
 import Persist from "./middleware/Persist";
 import CheckAuth from "./middleware/CheckAuth";
 import SellerPage from "./pages/SellerPage";
+import SellerProducts from "./components/SellerProducts";
+import Setting from "./components/Setting";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +27,16 @@ const router = createBrowserRouter([
           {
             path: "/seller",
             element: <SellerPage />,
+            children: [
+              {
+                path: "products",
+                element: <SellerProducts />,
+              },
+              {
+                path: "setting",
+                element: <Setting />,
+              },
+            ],
           },
           {
             element: <Root />,
@@ -36,10 +48,6 @@ const router = createBrowserRouter([
               {
                 path: "cart",
                 element: <Cart />,
-              },
-              {
-                path: "product/:id",
-                element: <ProductPage />,
               },
             ],
           },
@@ -55,6 +63,10 @@ const router = createBrowserRouter([
           {
             path: "/",
             element: <Home />,
+          },
+          {
+            path: "product/:id",
+            element: <ProductPage />,
           },
         ],
       },

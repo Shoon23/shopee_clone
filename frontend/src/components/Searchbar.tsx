@@ -15,8 +15,7 @@ const Searchbar: React.FC<Props> = ({}) => {
   const privateApi = usePrivateAxios(queryClient);
   const user: any = queryClient.getQueryData(["user"]);
 
-  const isLoggedIn = user === null;
-  console.log(isLoggedIn);
+  const isLoggedIn = user !== null;
 
   const { data } = useQuery(
     ["cart"],
@@ -49,7 +48,7 @@ const Searchbar: React.FC<Props> = ({}) => {
         </div>
       </div>
 
-      <div className="dropdown-end dropdown dropdown-hover">
+      <div className="dropdown-end dropdown-hover dropdown">
         <Link to={"/cart"}>
           <ShoppingCartIcon tabIndex={0} className="h-7 w-7 stroke-white" />
         </Link>

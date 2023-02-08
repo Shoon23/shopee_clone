@@ -6,17 +6,19 @@ type Props = {};
 
 const CheckAuth: React.FC<Props> = ({}) => {
   const queryClient = useQueryClient();
+  const location = useLocation();
 
   const user = queryClient.getQueryData(["user"]);
 
-  const isLoggedIn = user === null;
+  const isLoggedIn = user !== null;
 
   const { isLoading, isError } = useQuery(["user"], useRefreshToken, {
     enabled: isLoggedIn,
     refetchOnMount: false,
     retry: false,
   });
-  if (isError || !isLoggedIn) {
+
+  if (isError) {
     return <Outlet />;
   }
 

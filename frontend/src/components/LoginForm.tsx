@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { apiClient } from "../lib/apiClient";
 import { useLocation } from "react-router-dom";
+import { CurrencyBangladeshiIcon } from "@heroicons/react/24/outline";
 
 interface Props {}
 
@@ -27,21 +28,20 @@ const LoginForm: React.FC<Props> = ({}) => {
 
   const { mutate } = useMutation({
     mutationFn: async (formData: iLoginForm) => {
-      try {
-        const res = await apiClient.post("/auth/login", formData);
-        return res.data;
-      } catch (error) {
-        console.log(error);
-      }
+      const res = await apiClient.post("/auth/login", formData);
+      return res.data;
     },
     onSuccess(data, variables, context) {
       queryClient.setQueryData(["user"], data);
       navigate(pathName);
     },
+    onError(error) {
+      console.log(error);
+    },
   });
   return (
-    <div className="bg-white w-96 h-max self-center flex shadow-2xl rounded-md flex-col place-items-center gap-2 p-5">
-      <div className="self-start m-2">
+    <div className="flex h-max w-96 flex-col place-items-center gap-2 self-center rounded-md bg-white p-5 shadow-2xl">
+      <div className="m-2 self-start">
         <p className="text-2xl">Login</p>
       </div>
       <form
@@ -49,19 +49,19 @@ const LoginForm: React.FC<Props> = ({}) => {
           mutate(data);
         })}
         action=""
-        className="flex flex-col gap-2 w-80"
+        className="flex w-80 flex-col gap-2"
       >
         <input
           type="email"
           placeholder="Email"
-          className="input input-bordered "
+          className="input-bordered input "
           {...register("email", { required: "Email is required" })}
         />
         <div className="text-red-600">{errors.email?.message}</div>
         <input
           type="password"
           placeholder="Password"
-          className="input input-bordered"
+          className="input-bordered input"
           {...register("password", {
             required: "Password is required",
             minLength: {
@@ -72,28 +72,28 @@ const LoginForm: React.FC<Props> = ({}) => {
         />
         <div className="text-red-600">{errors.password?.message}</div>
 
-        <button className="btn w-full max-w-xs bg-orange-500 border-orange-500 hover:bg-orange-600 hover:border-orange-600">
+        <button className="btn w-full max-w-xs border-orange-500 bg-orange-500 hover:border-orange-600 hover:bg-orange-600">
           Login
         </button>
       </form>
 
       <div className="text-sm">Forgot Password?</div>
 
-      <div className="relative flex py-1 items-center w-full">
+      <div className="relative flex w-full items-center py-1">
         <div className="flex-grow border-t border-gray-400"></div>
-        <span className="flex-shrink mx-4 text-gray-400">OR</span>
+        <span className="mx-4 flex-shrink text-gray-400">OR</span>
         <div className="flex-grow border-t border-gray-400"></div>
       </div>
       <div className="flex gap-5">
-        <button className=" btn btn-outline hover:bg-gray-100 hover:text-black w-36">
+        <button className=" btn-outline btn w-36 hover:bg-gray-100 hover:text-black">
           Facebook
         </button>
-        <button className="btn btn-outline hover:bg-gray-100 hover:text-black w-36">
+        <button className="btn-outline btn w-36 hover:bg-gray-100 hover:text-black">
           Google
         </button>
       </div>
 
-      <div className="flex py-1 gap-1">
+      <div className="flex gap-1 py-1">
         <p className="text-zinc-400">New to Shopee?</p>
         <Link to={"/auth/signup"} className="text-orange-600">
           Signup

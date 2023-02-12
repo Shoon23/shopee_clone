@@ -1,31 +1,22 @@
 import React, { useState } from "react";
 import SideBarItem from "./SideBarItem";
-import { sideBarMenu } from "../constant/sideBarMenu";
-import { Squares2X2Icon } from "@heroicons/react/24/outline";
+
+import { ShoppingBagIcon, Squares2X2Icon } from "@heroicons/react/24/outline";
 
 type Props = {};
 
 const SellerSideBar: React.FC<Props> = ({}) => {
-  const [isSelected, setIsSelected] = useState<number>(0);
-
-  const handleClick = (index: number) => {
-    setIsSelected(index);
+  const productMenu = {
+    name: "Product",
+    icon: ShoppingBagIcon,
+    options: ["My Product", "Add New Product"],
+    path: "/products",
   };
 
   return (
     <div className="h-screen w-1/5 overflow-x-scroll bg-white">
       <div className="flex flex-col">
-        {sideBarMenu.map((item: any, index) => {
-          return (
-            <SideBarItem
-              index={index}
-              isSelected={isSelected}
-              handleClick={() => handleClick(index)}
-              key={item.name}
-              data={item}
-            />
-          );
-        })}
+        <SideBarItem data={productMenu} />;
       </div>
     </div>
   );

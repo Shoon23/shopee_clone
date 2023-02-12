@@ -25,16 +25,16 @@ export const productController = {
   async addProduct(req: Request, res: Response) {
     const product = req.body;
 
-    const newProduct = await prisma.product.create({
-      data: {
-        product_name: product.product_name,
-        quantity: product.quantity,
-        price: product.price,
-        seller_id: product.seller_id,
-      },
-    });
+    // const newProduct = await prisma.product.create({
+    //   data: {
+    //     product_name: product.product_name,
+    //     quantity: product.quantity,
+    //     price: product.price,
 
-    res.status(201).json(newProduct);
+    //   },
+    // });
+
+    // res.status(201).json(newProduct);
   },
 
   async updateProduct(req: Request, res: Response) {

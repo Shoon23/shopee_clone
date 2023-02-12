@@ -16,11 +16,21 @@ model User{
   first_name String @db.VarChar(50)
   last_name String @db.VarChar(50)
   password String @db.VarChar(255)
-  is_seller Boolean @default(false)
+  profile_picture String? @db.VarChar(255) 
   address Address[]
   cart_id Cart?
   order_id Orders[]
+  shop_id Shop?
+}
+
+model Shop {
+  shop_id String @id @default(cuid())
+  shop_name String @db.VarChar(50)
+  shop_profile_picture String? @db.VarChar(255)
   products Product[]
+  user User @relation(fields: [user_id],references: [user_id])
+  user_id String @unique
+
 }
 
 model Address {
@@ -73,12 +83,56 @@ model Order_item {
 
 }
 
+
+
+model Category {
+  category_id String @id @default(cuid())
+  category_name String @db.VarChar(100)
+  products Categories_on_product[]
+
+}
+
 model Product {
   product_id String @id @default(cuid())
   product_name String @db.VarChar(100)
   quantity Int
   price Int
-  user User @relation(fields: [seller_id],references: [user_id])
-  seller_id String
-  
+  description String
+  created_at DateTime @default(now()) 
+  shop Shop @relation(fields: [shop_id],references: [shop_id])
+  shop_id String
+  product_variation Variation[]
+  product_images Product_image[]
+  categories Categories_on_product[]
+}
+
+model Categories_on_product {
+  product Product @relation(fields: [product_id],references: [product_id])
+  product_id String
+  category Category @relation(fields: [category_id],references: [category_id])
+  category_id String
+  assigend_at DateTime @default(now())
+
+  @@id([product_id,category_id])
+}
+model Product_image {
+  product_image_id String @id @default(cuid())
+  product_image_link String
+  product Product @relation(fields: [product_id],references: [product_id])
+  product_id String
+}
+
+model Variation {
+  variation_id String @id @default(cuid())
+  variation_name String
+  product Product @relation(fields: [product_id],references: [product_id])
+  product_id String
+  variation_item Variation_item[]
+}
+
+model Variation_item {
+  variation_item_id String @id @default(cuid())
+  variation_item_name String
+  variaton Variation @relation(fields: [variation_id],references: [variation_id])
+  variation_id String
 }

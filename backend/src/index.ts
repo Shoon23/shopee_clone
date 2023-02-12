@@ -1,5 +1,5 @@
 import express from "express";
-import { authRoutes, cartRoutes, productRoutes } from "./routes";
+import { authRoutes, cartRoutes, productRoutes, sellerRoutes } from "./routes";
 import { verifyToken } from "./middleware/verifyToken";
 import cors from "cors";
 import * as dotenv from "dotenv";
@@ -21,7 +21,9 @@ app.use(express.json());
 app.use("/auth", authRoutes);
 app.use("/products", productRoutes);
 
-app.use("/cart", verifyToken, cartRoutes);
+app.use(verifyToken);
+app.use("/cart", cartRoutes);
+app.use("/seller", sellerRoutes);
 
 app.listen(PORT, () => {
   console.log("runnng");

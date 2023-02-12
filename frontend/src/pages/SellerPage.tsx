@@ -7,11 +7,6 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 type Props = {};
 
 const SellerPage: React.FC<Props> = ({}) => {
-  const queryClient = useQueryClient();
-  const user = queryClient.getQueryData(["user"]);
-
-  console.log(user);
-
   return (
     <div className="h-screen overflow-hidden bg-gray-100">
       <SellerHeader />

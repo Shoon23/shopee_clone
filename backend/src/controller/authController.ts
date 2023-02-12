@@ -15,7 +15,6 @@ export const authController = {
         email: user.email,
       },
     });
-
     if (!checkUser) {
       const hashPassword = await bcrypt.hash(user.password, 10);
       const newUser = await prisma.user.create({

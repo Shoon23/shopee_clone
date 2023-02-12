@@ -1,4 +1,5 @@
 import React from "react";
+import NewProducts from "./NewProducts";
 
 interface Props {
   selected: number;
@@ -9,11 +10,7 @@ const SellerProductList: React.FC<Props> = ({ selected }) => {
     <div className="px-6">
       <div className="mb-2 flex justify-between">
         <div className="">0 Product</div>
-        {selected == 1 && (
-          <button className="rounded-md bg-orange-600 p-2 text-white hover:bg-orange-700">
-            + Add Products
-          </button>
-        )}
+        {selected == 1 && <NewProducts />}
       </div>
       <div className="w-full overflow-x-auto">
         <table className="table w-full">

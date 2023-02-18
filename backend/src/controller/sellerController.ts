@@ -3,7 +3,7 @@ import { prisma } from "../services/seed";
 
 export const sellerController = {
   async isSeller(req: Request, res: Response) {
-    const user_id = req.body.user_id;
+    const user_id = req.params.user_id;
 
     const shop = await prisma.shop.findUnique({
       where: {
@@ -28,5 +28,31 @@ export const sellerController = {
     });
 
     return res.status(201).json(newShop);
+  },
+  async getProducts(req: Request, res: Response) {
+    const shop_id = req.params.shop_id;
+    const limit = req.query.limit || 10;
+
+    const products = await prisma.product.findMany({
+      where: {
+        shop_id,
+      },
+      take: Number(limit),
+      include: {
+        categories: {
+          include: {
+            category: true,
+          },
+        },
+        product_images: true,
+        product_variation: {
+          include: {
+            variation_item: true,
+          },
+        },
+      },
+    });
+
+    return res.status(200).json(products);
   },
 };

@@ -3,15 +3,25 @@ import { QueryClient } from "@tanstack/react-query";
 import { useRefreshToken } from "./useRefreshToken";
 import jwt_decode from "jwt-decode";
 
-export const usePrivateAxios = (queryClient: QueryClient) => {
+export const usePrivateAxios = (
+  queryClient: QueryClient,
+  isMultiForm: boolean = false
+) => {
   const user: any = queryClient.getQueryData(["user"]);
+
+  const header = isMultiForm
+    ? {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${user?.accessToken}`,
+      }
+    : {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user?.accessToken}`,
+      };
 
   const privateAxios = axios.create({
     baseURL: "http://localhost:8080",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${user?.accessToken}`,
-    },
+    headers: header,
     withCredentials: true,
   });
 

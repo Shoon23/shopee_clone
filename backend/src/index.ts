@@ -17,7 +17,7 @@ app.use(
 );
 app.use(cookieParser());
 app.use(express.json());
-
+app.use(express.static("uploads"));
 app.use("/auth", authRoutes);
 app.use("/products", productRoutes);
 

@@ -9,7 +9,7 @@ interface Props {}
 const DailyDiscover: React.FC<Props> = ({}) => {
   const [page, setPage] = useState<number>(2);
   const topRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
+
   const { data: products, isLoading } = useQuery(
     ["products", page],
     async () => {

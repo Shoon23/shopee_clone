@@ -97,7 +97,7 @@ model Product {
   product_name String @db.VarChar(100)
   quantity Int
   price Int
-  description String
+  description String?
   created_at DateTime @default(now()) 
   shop Shop @relation(fields: [shop_id],references: [shop_id])
   shop_id String

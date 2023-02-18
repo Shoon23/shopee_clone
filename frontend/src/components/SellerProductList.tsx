@@ -1,18 +1,36 @@
 import React from "react";
 import NewProducts from "./NewProducts";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { usePrivateAxios } from "../hooks/usePrivateAxios";
+import SellerProductItem from "./SellerProductItem";
 
 interface Props {
   selected: number;
 }
 
 const SellerProductList: React.FC<Props> = ({ selected }) => {
+  const queryClient = useQueryClient();
+
+  const shop: any = queryClient.getQueryData(["shop"]);
+  const api = usePrivateAxios(queryClient);
+
+  const { data, isLoading } = useQuery(["seller_products"], async () => {
+    const res = await api.get(`/seller/products/${shop.shop_id}?limit=10`);
+    console.log(res.data);
+    return res.data;
+  });
+
+  if (isLoading) {
+    return <div className="">Loading.....</div>;
+  }
+
   return (
     <div className="px-6">
       <div className="mb-2 flex justify-between">
         <div className="">0 Product</div>
-        {selected == 1 && <NewProducts />}
+        <NewProducts />
       </div>
-      <div className="w-full overflow-x-auto">
+      <div className="flex w-full flex-col overflow-x-auto">
         <table className="table w-full">
           <thead>
             <tr>
@@ -29,51 +47,27 @@ const SellerProductList: React.FC<Props> = ({ selected }) => {
               <th></th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <th>
-                <label>
-                  <input type="checkbox" className="checkbox" />
-                </label>
-              </th>
-              <td>
-                <div className="flex items-center space-x-3">
-                  <div className="avatar">
-                    <div className="mask mask-squircle h-12 w-12">
-                      <img
-                        src="/tailwind-css-component-profile-2@56w.png"
-                        alt="Avatar Tailwind CSS Component"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <div className="font-bold">Hart Hagerty</div>
-                    <div className="text-sm opacity-50">United States</div>
-                  </div>
-                </div>
-              </td>
-              <td>
-                Zemlak, Daniel and Leannon
-                <br />
-                <span className="badge-ghost badge badge-sm">
-                  Desktop Support Technician
-                </span>
-              </td>
-              <td>Purple</td>
-              <th>
-                <button className="btn-ghost btn-xs btn">details</button>
-              </th>
-              <th className="flex gap-1">
-                <button className="rounded-md bg-green-500 px-4 py-2 text-white hover:bg-green-600">
-                  Update
-                </button>
-                <button className="rounded-md bg-red-500 px-4 py-2 text-white hover:bg-red-600">
-                  Delete
-                </button>
-              </th>
-            </tr>
-          </tbody>
+          {data ? (
+            data.slice(0, 10).map((productDetails: any) => {
+              return (
+                <SellerProductItem
+                  key={productDetails.product_id}
+                  productDetails={productDetails}
+                />
+              );
+            })
+          ) : (
+            <div>No Products</div>
+          )}
+
+          <div className="mt-16"></div>
         </table>
+        {data.length === 11 && (
+          <div className="btn-group grid w-40 grid-cols-2 self-end">
+            <button className="btn-outline btn">Previous</button>
+            <button className="btn-outline btn">Next</button>
+          </div>
+        )}
       </div>
     </div>
   );

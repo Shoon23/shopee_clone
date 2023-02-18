@@ -11,12 +11,11 @@ interface iProductFrom {
   product_description: string;
   variations: Array<{
     variant: string;
-    option_1: string;
-    option_2: string;
-    option_3: string;
-    option_4: string;
+    option_1: string | null;
+    option_2: string | null;
+    option_3: string | null;
+    option_4: string | null;
   }>;
-  images: Array<File>;
 }
 
 type Props = {};
@@ -24,9 +23,12 @@ type Props = {};
 const NewProducts: React.FC<Props> = ({}) => {
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const queryClient = useQueryClient();
+  const user: any = queryClient.getQueryData(["user"]);
+  const shop: any = queryClient.getQueryData(["shop"]);
   const [productImages, setProductImages] = useState<Array<Blob | null>>([]);
   const [file, setFile] = useState<Array<File>>([]);
-  const api = usePrivateAxios(queryClient);
+
+  const api = usePrivateAxios(queryClient, true);
   const {
     register,
     handleSubmit,
@@ -37,15 +39,23 @@ const NewProducts: React.FC<Props> = ({}) => {
     control,
     name: "variations",
   });
+  let formData = new FormData();
 
   const { mutate } = useMutation({
-    mutationFn: async (formData: iProductFrom) => {},
+    mutationFn: async (formData: FormData) => {
+      const res = await api.post("/products/add", formData);
+      return res.data;
+    },
+    onSuccess(data) {
+      console.log(data);
+    },
   });
-
   const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const imageFile = e?.target?.files?.item(0);
     if (!imageFile) return;
-    setFile([...file, imageFile]);
+
+    setFile((prev) => [...prev, imageFile]);
+
     setProductImages((prev: any) => [...prev, URL.createObjectURL(imageFile)]);
   };
   const handleaddImage = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -54,7 +64,21 @@ const NewProducts: React.FC<Props> = ({}) => {
   };
 
   const onSubmit = handleSubmit((data) => {
-    data.images = file;
+    formData.append("product_name", data.product_name);
+    formData.append("category", data.category);
+    formData.append("price", data.price.toString());
+    formData.append("product_description", data.product_description);
+    formData.append("quantity", data.quantity.toString());
+    formData.append("shop_id", shop?.shop_id);
+    data?.variations?.forEach((item, index) => {
+      formData.append(`variations`, JSON.stringify(item));
+    });
+
+    file.forEach((item) => {
+      formData.append("images", item);
+    });
+
+    mutate(formData);
   });
 
   return (
@@ -72,7 +96,11 @@ const NewProducts: React.FC<Props> = ({}) => {
             <h3 className="text-lg font-bold">Add New Product!</h3>
             <h6 className="text-sm">Add some information about the product</h6>
           </div>
-          <form onSubmit={onSubmit} className="flex w-11/12 flex-col gap-2">
+          <form
+            onSubmit={onSubmit}
+            encType="mulmultipart/form-data"
+            className="flex w-11/12 flex-col gap-2"
+          >
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Product Name</span>
@@ -220,16 +248,16 @@ const NewProducts: React.FC<Props> = ({}) => {
               <button
                 type="button"
                 onClick={() => {
-                  if (fields.length > 2) return;
+                  if (fields.length > 1) return;
                   append({
                     variant: "",
-                    option_1: "",
-                    option_2: "",
-                    option_3: "",
-                    option_4: "",
+                    option_1: null,
+                    option_2: null,
+                    option_3: null,
+                    option_4: null,
                   });
                 }}
-                hidden={fields.length === 2 && true}
+                hidden={fields.length === 1 && true}
                 className="justify  m-2 h-10 w-max place-self-end  rounded-full border px-3 shadow-xl  hover:shadow-inner active:bg-orange-600"
               >
                 + Enable Variants
@@ -259,6 +287,7 @@ const NewProducts: React.FC<Props> = ({}) => {
                 ref={hiddenFileInput}
                 onChange={handleChangeImage}
                 hidden
+                name="images"
                 accept="image/*"
               />
               <button
@@ -276,7 +305,10 @@ const NewProducts: React.FC<Props> = ({}) => {
               >
                 Cancel
               </label>
-              <button className="mr-2 h-10 rounded-lg border-2 border-orange-600 bg-orange-600 px-3 text-white shadow-2xl  hover:border-orange-700 hover:bg-orange-700 hover:shadow-inner">
+              <button
+                type="submit"
+                className="mr-2 h-10 rounded-lg border-2 border-orange-600 bg-orange-600 px-3 text-white shadow-2xl  hover:border-orange-700 hover:bg-orange-700 hover:shadow-inner"
+              >
                 Add Product
               </button>
             </div>

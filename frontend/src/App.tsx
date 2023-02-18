@@ -15,7 +15,8 @@ import Persist from "./middleware/Persist";
 import CheckAuth from "./middleware/CheckAuth";
 import SellerPage from "./pages/SellerPage";
 import SellerProducts from "./components/SellerProducts";
-import Setting from "./components/Setting";
+import CheckSeller from "./middleware/CheckSeller";
+import CreateShopForm from "./components/CreateShopForm";
 
 const router = createBrowserRouter([
   {
@@ -25,19 +26,21 @@ const router = createBrowserRouter([
         element: <ProtectedRoutes />,
         children: [
           {
-            path: "/seller",
-            element: <SellerPage />,
+            element: <CheckSeller />,
             children: [
               {
-                path: "products",
-                element: <SellerProducts />,
-              },
-              {
-                path: "setting",
-                element: <Setting />,
+                path: "/seller",
+                element: <SellerPage />,
+                children: [
+                  {
+                    path: "products",
+                    element: <SellerProducts />,
+                  },
+                ],
               },
             ],
           },
+
           {
             element: <Root />,
             children: [
@@ -70,9 +73,12 @@ const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: "/new_shop",
+        element: <CreateShopForm />,
+      },
     ],
   },
-
   {
     element: <CheckAuth />,
     children: [

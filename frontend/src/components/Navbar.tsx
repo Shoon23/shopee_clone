@@ -11,35 +11,38 @@ const Navbar: React.FC<Props> = ({}) => {
   return (
     <div className="flex place-content-between py-2">
       <div className="flex gap-3">
-        <div className="text-white hover:text-gray-300 text-sm">
+        <Link
+          to={"/seller/products"}
+          className="text-sm text-white hover:text-gray-300"
+        >
           Seller Centre
-        </div>
-        <div className="text-white hover:text-gray-300 text-sm">
+        </Link>
+        <div className="text-sm text-white hover:text-gray-300">
           Sell on Shopee
         </div>
       </div>
 
       <div className="flex gap-3">
-        <div className="text-white hover:text-gray-300 text-sm">
+        <div className="text-sm text-white hover:text-gray-300">
           Notification
         </div>
-        <div className="text-white hover:text-gray-300 text-sm">Help</div>
-        <div className="text-white hover:text-gray-300 text-sm">English</div>
+        <div className="text-sm text-white hover:text-gray-300">Help</div>
+        <div className="text-sm text-white hover:text-gray-300">English</div>
 
         {user ? (
-          <Link to={"/user"} className="dropdown dropdown-hover dropdown-end ">
+          <Link to={"/user"} className="dropdown dropdown-end dropdown-hover ">
             <div tabIndex={0} className="flex gap-1 ">
               <div className="avatar">
                 <div className="w-6 rounded-full">
                   <img src="" />
                 </div>
               </div>
-              <div className="hover:text-gray-300 text-white">User1</div>
+              <div className="text-white hover:text-gray-300">User1</div>
             </div>
 
             <ul
               tabIndex={0}
-              className="menu bg-base-100 w-34 p-2 rounded-box border dropdown-content shadow w-52"
+              className="w-34 dropdown-content menu rounded-box w-52 border bg-base-100 p-2 shadow"
             >
               <li>
                 <a className="text-sm">My Account</a>
@@ -56,13 +59,13 @@ const Navbar: React.FC<Props> = ({}) => {
           <div className="flex gap-1 ">
             <Link
               to={"auth/signup"}
-              className="hover:text-gray-300 text-white text-sm"
+              className="text-sm text-white hover:text-gray-300"
             >
               Signup
             </Link>
             <Link
               to={"auth/login"}
-              className="hover:text-gray-300 text-white text-sm"
+              className="text-sm text-white hover:text-gray-300"
             >
               Login
             </Link>

@@ -93,7 +93,7 @@ model Category {
 }
 
 model Product {
-  product_id String @id @default(cuid())
+  product_id String @id @default(cuid()) @unique
   product_name String @db.VarChar(100)
   quantity Int
   price Int
@@ -123,7 +123,7 @@ model Product_image {
 }
 
 model Variation {
-  variation_id String @id @default(cuid())
+  variation_id String @id @default(cuid()) @unique
   variation_name String
   product Product @relation(fields: [product_id],references: [product_id])
   product_id String
@@ -131,7 +131,7 @@ model Variation {
 }
 
 model Variation_item {
-  variation_item_id String @id @default(cuid())
+  variation_item_id String @id @default(cuid()) 
   variation_item_name String
   variaton Variation @relation(fields: [variation_id],references: [variation_id])
   variation_id String

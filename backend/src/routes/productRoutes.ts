@@ -21,7 +21,11 @@ routes.get("/:id", productController.getSingle);
 
 routes.use(verifyToken);
 routes.post("/add", upload.array("images"), productController.addProduct);
-routes.put("/update", productController.updateProduct);
+routes.put(
+  "/update",
+  upload.array("new_images"),
+  productController.updateProduct
+);
 routes.delete("/delete", productController.deleteProduct);
 
 export default routes;

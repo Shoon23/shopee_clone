@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { prisma } from "../services/seed";
 import { categoryCode, iCategoryCode } from "../lib/constant";
+import { unlinkSync } from "fs";
 
 export const productController = {
   async getAll(req: Request, res: Response) {
@@ -93,36 +94,115 @@ export const productController = {
 
   async updateProduct(req: Request, res: Response) {
     const product = req.body;
+    const newProductImages: any = req.files;
 
-    const updateProduct = await prisma.product.update({
+    const productDetails = {
+      product_name: product?.product_name,
+      quantity: Number(product?.quantity),
+      price: Number(product?.price),
+      description: product?.product_description,
+    };
+
+    const categoryKey: keyof iCategoryCode = product.category;
+
+    const parseVariations = JSON.parse(product?.variations);
+
+    if (!product.current_images) {
+      const findProductImage = await prisma.product_image.findMany({
+        where: {
+          product_id: product?.product_id,
+        },
+      });
+
+      findProductImage.map((item: any) => {
+        unlinkSync(`uploads/${item.product_image_link}`);
+      });
+
+      const deleteProduct = await prisma.product_image.deleteMany({
+        where: {
+          product_id: product?.product_id,
+        },
+      });
+    }
+
+    if (newProductImages) {
+      const addImages = newProductImages?.map((item: any) => {
+        return prisma.product_image.create({
+          data: {
+            product_id: product.product_id,
+            product_image_link: item.filename,
+          },
+        });
+      });
+
+      const productImages = await Promise.all(addImages);
+    }
+
+    const findVariation = await prisma.variation.findFirst({
       where: {
-        product_id: product.product_id,
+        product_id: product?.product_id,
       },
-      data: product,
     });
 
-    res.status(200).json(updateProduct);
+    const updateProductDetails = await prisma.product.update({
+      where: {
+        product_id: product?.product_id,
+      },
+      data: productDetails,
+    });
+
+    const getCategory = await prisma.categories_on_product.updateMany({
+      where: {
+        product_id: product?.product_id,
+      },
+      data: {
+        category_id: categoryCode[categoryKey],
+      },
+    });
+
+    const updateVariation = await prisma.variation.update({
+      where: {
+        variation_id: findVariation?.variation_id,
+      },
+      data: {
+        variation_name: parseVariations?.variant,
+      },
+    });
+
+    delete parseVariations?.variant;
+
+    const options = await prisma.variation_item.findMany({
+      where: {
+        variation_id: findVariation?.variation_id,
+      },
+    });
+
+    const addOptions = Object.values(parseVariations).map((val: any, index) => {
+      if (val) {
+        return prisma.variation_item.update({
+          where: {
+            variation_item_id: options[index]?.variation_item_id,
+          },
+          data: {
+            variation_item_name: val,
+          },
+        });
+      }
+    });
+
+    const updateOptions = await Promise.all(addOptions);
+
+    res.status(200).json();
   },
   async deleteProduct(req: Request, res: Response) {
     const product_id = req.body.product_id;
-    const variation_id = req.body.product_variations.variation_id;
-    console.log();
+    const variation_id = req.body?.product_variations[0]?.variation_id;
+
+    let transaction;
 
     const deleteCategories = prisma.categories_on_product.deleteMany({
       where: {
         product_id,
-      },
-    });
-
-    const deleteOptions = prisma.variation_item.deleteMany({
-      where: {
-        variation_id,
-      },
-    });
-
-    const deleteVariants = prisma.variation.deleteMany({
-      where: {
-        AND: [{ product_id }, { variation_id }],
       },
     });
 
@@ -138,15 +218,34 @@ export const productController = {
       },
     });
 
-    const transaction = await prisma.$transaction([
-      deleteCategories,
-      deleteOptions,
-      deleteVariants,
-      deleteImages,
-      deleteProduct,
-    ]);
+    if (variation_id) {
+      const deleteOptions = prisma.variation_item.deleteMany({
+        where: {
+          variation_id,
+        },
+      });
 
-    console.log(transaction);
+      const deleteVariants = prisma.variation.deleteMany({
+        where: {
+          AND: [{ product_id }, { variation_id }],
+        },
+      });
+
+      transaction = await prisma.$transaction([
+        deleteCategories,
+        deleteOptions,
+        deleteVariants,
+        deleteImages,
+        deleteProduct,
+      ]);
+    } else {
+      transaction = await prisma.$transaction([
+        deleteCategories,
+        deleteImages,
+        deleteProduct,
+      ]);
+    }
+
     res.status(200).json(transaction);
   },
 };

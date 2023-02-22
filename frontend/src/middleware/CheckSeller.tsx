@@ -16,8 +16,6 @@ const CheckSeller: React.FC<Props> = ({}) => {
     return res.data;
   });
 
-  console.log(location);
-
   if (isLoading) {
     return <div className="">Loadinngg</div>;
   }
